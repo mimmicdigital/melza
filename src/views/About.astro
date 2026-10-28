@@ -11,9 +11,6 @@ const { lang } = Astro.props;
 const team = [
   { first: 'Cristina', last: 'Zamora', img: '2020/12/about-cristina-zamora.jpg', email: 'cristina@melza.eu', linkedin: 'https://www.linkedin.com/in/cristinazamoracollantes/' },
   { first: 'Cristian', last: 'Melero', img: '2020/12/about-cristian-melero.jpg', email: 'melero.c@melza.eu', linkedin: 'https://www.linkedin.com/in/cristianmelero/' },
-  { first: 'María', last: 'Gonzalvez', img: '2023/02/about-Maria-Gonzalvez.jpg', email: 'gonzalvez.m@melza.eu', linkedin: 'https://www.linkedin.com/in/mgonzalvezpalacios' },
-  { first: 'Sergio', last: 'Martinez', img: '2023/02/about-Sergio-Martinez.jpg', email: 'sergio.m@melza.eu', linkedin: 'https://www.linkedin.com/in/sergiomartinezgadea' },
-  { first: 'Agnieszka', last: 'Sowinska', img: '2023/02/about-Aga-Sowinska.jpg', email: 'aga@melza.eu', linkedin: 'https://www.linkedin.com/in/aga-sowinska' },
 ];
 
 const t = {
@@ -33,13 +30,10 @@ const t = {
     how: [['No es el ', 'qué'], ['sino el ', 'cómo']],
     values: ['Calidad, calidad, calidad', 'Flexibilidad, agilidad y energía'],
     teamTitle: 'El equipo',
-    roles: ['Co-founder multitasker', 'Co-founder, consultor', 'Consultora senior', 'Consultor senior', 'Consultora senior'],
+    roles: ['Co-founder multitasker', 'Co-founder, consultor'],
     bios: [
       'Multitasker, inquieta y optimista. Le flipan los documentales. Detalle al máximo nivel. Cris hace magia con procesos de producto y negocio.',
       'Techie a tope y deportista. La mente estratégica del equipo. Es un crack gestionando procesos de Data, Agile/Scrum, Security y DevOps.',
-      'Le encanta escribir poesía, bailar Swing y ver películas clásicas en blanco y negro. Amante de los perros. Su fuerte: Backend, DevOps y padawan de todo tipo de perfiles Data! 😎',
-      'Baloncesto como forma de vida y deportes como hobbie, siempre jugador de equipo y como firma personal una sonrisa. ¿Especialidad?, ninguna en concreto, pero hay un perfil con el que estoy como pez en el agua. Y es que podríamos decir que soy “a QA man”.',
-      'Aga para los amigos, ex-profesora de inglés, ávida viajera y políglota. Disfruta ayudando a los demás. Especialista en DevOps, Infra, SRE y perfiles internacionales. Su objetivo: ayudar a crecer profesionalmente a los demás.',
     ],
     write: 'Escribir a',
   },
@@ -59,13 +53,10 @@ const t = {
     how: [['Not ', 'what'], ['but ', 'how']],
     values: ['Quality, quality, quality', 'Flexibility, agility and energy'],
     teamTitle: 'The team',
-    roles: ['Co-founder multitasker', 'Co-founder, consultant', 'Senior consultant', 'Senior consultant', 'Senior consultant'],
+    roles: ['Co-founder multitasker', 'Co-founder, consultant'],
     bios: [
       'Multitasker, optimistic and restless. Obsessed with documentaries. Maximum precision in every detail. Cris does magic to product and business processes.',
       'Extreme techie and athletic. The strategic mind behind the team. He is a rock star handling Data, Agile/Scrum, Security and DevOps.',
-      'She loves writing poetry, swing dancing and watching black and white films. Dog lover. Her forte: Backend, DevOps and Padawan for all types of Data profiles! 😎',
-      'Basketball as a way of life and sports as a hobby, always a team player and a smile as a personal signature. Specialty? None in particular, but there is a profile in which I feel like a fish in water. We could say that I am “a QA man”.',
-      'Aga for friends, former English teacher, avid traveler and polyglot. She enjoys helping others. She is a specialist in DevOps, Infra, SRE and international profiles. Her objective: to help others grow professionally.',
     ],
     write: 'Email',
   },
@@ -149,7 +140,7 @@ const other = lang === 'es' ? routes.about.en : routes.about.es;
   .how .value { margin: 12px 0; font-weight: 800; }
   .how .aqua { color: var(--aqua); }
   .how .yellow { color: var(--yellow); }
-  .team { list-style: none; padding: 0; margin: 48px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px 32px; }
+  .team { list-style: none; padding: 0; margin: 48px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 360px)); justify-content: center; gap: 40px clamp(32px, 6vw, 80px); }
   .team img { border-radius: var(--radius); aspect-ratio: 1; object-fit: cover; width: 100%; margin-bottom: 18px; background: var(--soft); }
   .team h3 { font-size: 2rem; margin-bottom: 6px; }
   .team h3 span { font-weight: 500; font-size: 1.4rem; }
@@ -159,5 +150,6 @@ const other = lang === 'es' ? routes.about.en : routes.about.es;
   .links a:hover { background: var(--violet); color: #fff; }
   @media (max-width: 820px) {
     .split, .services { grid-template-columns: 1fr; }
+    .team { grid-template-columns: minmax(0, 360px); }
   }
 </style>

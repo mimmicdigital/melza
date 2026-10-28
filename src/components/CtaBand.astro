@@ -1,0 +1,19 @@
+---
+import { routes, ui, type Lang } from '../lib/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui[lang].cta;
+---
+<section class="cta">
+  <div class="wrap narrow center reveal">
+    <h2>{t.title}</h2>
+    <p><strong>{t.lead}</strong> {t.text}</p>
+    <a class="btn btn-purple" href={routes.contact[lang]}>{t.button}</a>
+  </div>
+</section>
+<style>
+  .cta { padding: clamp(56px, 8vw, 96px) 0; background: var(--soft); }
+  .cta h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); }
+  .cta p { max-width: 560px; margin: 0 auto 28px; }
+</style>

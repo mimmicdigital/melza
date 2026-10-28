@@ -1,0 +1,7 @@
+---
+// Marker-style highlight used for most headings on the original site.
+interface Props { c?: string; h?: string }
+const { c, h } = Astro.props;
+const style = [c && `--c:${c}`, h && `--h:${h}`].filter(Boolean).join(';');
+---
+<span class="hl" style={style || undefined}><slot /></span>

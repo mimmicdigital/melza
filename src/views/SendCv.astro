@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import Hl from '../components/Hl.astro';
+import LeadForm from '../components/LeadForm.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { routes, type Lang } from '../lib/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = {
+  es: {
+    title: 'Envíanos tu CV | Melza Tech Headhunting',
+    description: '¿No encuentras una oferta que encaje contigo? Envíanos tu CV y te tendremos en cuenta para los próximos procesos de selección tech.',
+    h1: ['Envíanos tu ', 'CV'],
+  },
+  en: {
+    title: 'Send us your CV | Melza Tech Headhunting',
+    description: "Can't find an offer that fits you? Send us your CV and we will keep you in mind for our upcoming tech recruitment processes.",
+    h1: ['Send us your ', 'CV'],
+  },
+}[lang];
+const other = lang === 'es' ? routes.cv.en : routes.cv.es;
+---
+<Base lang={lang} title={t.title} description={t.description} alt={other}>
+  <section class="intro grad">
+    <div class="wrap narrow">
+      <h1 class="display center"><Hl c="#fff">{t.h1[0]}<em>{t.h1[1]}</em></Hl></h1>
+      <LeadForm lang={lang} kind="cv" />
+    </div>
+  </section>
+  <CtaBand lang={lang} />
+</Base>
+
+<style>
+  .intro { padding: clamp(64px, 10vw, 120px) 0; }
+  h1 { margin-bottom: 40px; }
+</style>

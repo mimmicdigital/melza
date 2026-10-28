@@ -1,0 +1,17 @@
+# Rebuilds the site every morning so the job list follows what is published in Manatal.
+# Needs the repository secret NETLIFY_BUILD_HOOK (Netlify → Site configuration → Build hooks).
+name: Rebuild job offers
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Netlify build
+        env:
+          HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then echo "NETLIFY_BUILD_HOOK is not set"; exit 0; fi
+          curl -fsS -X POST -d '{}' "$HOOK"

@@ -1,0 +1,80 @@
+---
+import Base from '../layouts/Base.astro';
+import Hl from '../components/Hl.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { getJobs, jobPath } from '../lib/jobs';
+import { routes, site, type Lang } from '../lib/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const jobs = await getJobs();
+const t = {
+  es: {
+    title: 'Vacantes tech IT | Encuentra tu Good Job en Melza',
+    description: 'Revisa nuestras vacantes tech it y encuentra tu Good Job con Melza. Disfrutamos conectando a cada candidato con su empresa ideal.',
+    h1: ['Vacantes ', 'tech IT'],
+    lead: `Ahora mismo tenemos ${jobs.length} procesos abiertos. Encuentra tu good job y aplica en un par de clics.`,
+    leadEmpty: 'Consulta nuestros procesos abiertos en nuestra página de empleo.',
+    see: 'Ver oferta',
+    all: 'Ver todas las ofertas',
+    none: '¿No encuentras tu oferta? Envíanos tu CV y te tendremos en cuenta.',
+    cv: 'Envíanos tu CV',
+    remote: 'Remoto',
+  },
+  en: {
+    title: 'Tech IT Vacancies | Find your Good Job with Melza',
+    description: 'Check our IT Tech vacancies and find your Good Job with Melza. We enjoy connecting each candidate with their ideal company.',
+    h1: ['Tech IT ', 'vacancies'],
+    lead: `We have ${jobs.length} open positions right now. Find your good job and apply in a couple of clicks.`,
+    leadEmpty: 'Check our open positions on our careers page.',
+    see: 'See offer',
+    all: 'See all offers',
+    none: "Can't find your offer? Send us your CV and we'll keep you in mind.",
+    cv: 'Send us your CV',
+    remote: 'Remote',
+  },
+}[lang];
+const other = lang === 'es' ? routes.jobs.en : routes.jobs.es;
+---
+<Base lang={lang} title={t.title} description={t.description} alt={other}>
+  <section class="intro grad">
+    <div class="wrap">
+      <h1 class="display reveal"><Hl c="#fff">{t.h1[0]}<em>{t.h1[1]}</em></Hl></h1>
+      <p class="lead">{jobs.length ? t.lead : t.leadEmpty}</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap">
+      {jobs.length > 0 ? (
+        <ul class="jobs">
+          {jobs.map((job) => (
+            <li>
+              <a href={jobPath(job)}>
+                <h2>{job.title}</h2>
+                <p>{[job.location, job.remote && t.remote].filter(Boolean).join(' · ') || 'Barcelona'}</p>
+                <span class="more">{t.see} →</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="center"><a class="btn btn-coral" href={site.careersPage} target="_blank" rel="noopener">{t.all}</a></p>
+      )}
+      <p class="center after">{t.none} <a href={routes.cv[lang]}>{t.cv}</a></p>
+    </div>
+  </section>
+  <CtaBand lang={lang} />
+</Base>
+
+<style>
+  .intro { padding: clamp(64px, 10vw, 120px) 0; }
+  .lead { font-size: 1.2rem; font-weight: 600; max-width: 640px; }
+  .jobs { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+  .jobs a { display: flex; flex-direction: column; height: 100%; padding: 24px; border-radius: var(--radius); border: 1px solid var(--line); text-decoration: none; transition: border-color 0.2s, transform 0.2s; }
+  .jobs a:hover { border-color: var(--coral); transform: translateY(-2px); }
+  .jobs h2 { font-size: 1.2rem; }
+  .jobs p { margin: 0 0 16px; opacity: 0.75; font-size: 0.95rem; }
+  .more { margin-top: auto; font-weight: 700; color: var(--coral); }
+  .after { margin-top: 48px; }
+  .after a { color: var(--purple); font-weight: 700; }
+</style>

@@ -1,0 +1,82 @@
+---
+import { esOnly, routes, site, ui, up, type Lang } from '../lib/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = ui[lang];
+const n = t.newsletter;
+const thanks = lang === 'es' ? '/gracias/' : '/en/thank-you/';
+---
+<section class="news grad" aria-labelledby="news-title">
+  <div class="wrap news-inner">
+    <div>
+      <h2 id="news-title" class="title"><span class="hl" style="--c:#fff">{n.title}</span></h2>
+      <p set:html={n.text} />
+    </div>
+    <form name={`newsletter-${lang}`} method="POST" action={thanks} data-netlify="true" netlify-honeypot="bot-field" data-event="alta_newsletter">
+      <input type="hidden" name="form-name" value={`newsletter-${lang}`} />
+      <p class="hidden-field"><label>No rellenar <input name="bot-field" /></label></p>
+      <div class="row">
+        <label class="sr" for="news-email">{n.placeholder}</label>
+        <input id="news-email" type="email" name="email" required placeholder={n.placeholder} autocomplete="email" />
+        <button class="btn btn-ink" type="submit">{n.button}</button>
+      </div>
+      <p class="small">{n.legal} <a href={esOnly.privacy}>{t.privacyLink}</a>.</p>
+      <label class="check small"><input type="checkbox" name="acepta-privacidad" required /> <span>{n.accept}</span></label>
+    </form>
+  </div>
+</section>
+<footer class="foot">
+  <div class="wrap cols">
+    <div>
+      <img src={up('2020/11/logo-melza-white.png')} alt="Melza" width="140" height="40" loading="lazy" />
+    </div>
+    <div>
+      <h3 class="kicker">{t.footer.others}</h3>
+      <ul>
+        <li><a href={routes.jobs[lang]}>{t.footer.jobs}</a></li>
+        <li><a href={routes.cv[lang]}>{t.footer.cv}</a></li>
+        <li><a href={routes.faqs[lang]}>{t.footer.faqs}</a></li>
+        <li><a href={esOnly.blog}>{t.footer.blog}</a></li>
+        <li><a href={routes.contact[lang]}>{t.footer.talk}</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="kicker">{t.footer.contact}</h3>
+      <ul>
+        <li><a href={site.phoneHref}>{site.phone}</a></li>
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li><a href={site.linkedin} rel="noopener" target="_blank">LinkedIn</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap legal">
+    <p>© {new Date().getFullYear()} {t.footer.rights}</p>
+    <ul>
+      <li><a href={esOnly.privacy}>{t.footer.privacy}</a></li>
+      <li><a href={esOnly.legal}>{t.footer.legal}</a></li>
+      <li><a href={esOnly.cookies}>{t.footer.cookies}</a></li>
+      <li><a href="#" data-consent-open>{t.footer.settings}</a></li>
+    </ul>
+  </div>
+</footer>
+<style>
+  .news { padding: clamp(56px, 8vw, 96px) 0; color: var(--ink); }
+  .news-inner { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(24px, 5vw, 64px); align-items: center; }
+  .row { display: flex; gap: 10px; margin-bottom: 14px; }
+  .row input { flex: 1; min-width: 0; font: inherit; padding: 0 18px; min-height: 52px; border-radius: 999px; border: 0; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .foot { background: var(--ink); color: #fff; padding: 64px 0 28px; }
+  .cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 32px; }
+  .cols img { height: 40px; width: auto; }
+  .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .foot a { text-decoration: none; opacity: 0.85; }
+  .foot a:hover { opacity: 1; text-decoration: underline; }
+  .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.15); font-size: 0.85rem; opacity: 0.8; }
+  .legal p { margin: 0; }
+  .legal ul { display: flex; flex-wrap: wrap; gap: 16px; }
+  @media (max-width: 760px) {
+    .news-inner, .cols { grid-template-columns: 1fr; }
+    .row { flex-direction: column; }
+  }
+</style>

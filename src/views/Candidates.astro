@@ -1,0 +1,110 @@
+---
+import Base from '../layouts/Base.astro';
+import Hl from '../components/Hl.astro';
+import Testimonials from '../components/Testimonials.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { routes, up, type Lang } from '../lib/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+const t = {
+  es: {
+    title: 'Encontrar trabajo | Aquí tú eres la estrella | Melza',
+    description: 'En Melza nos representan los procesos de recruiting justos y transparentes. Miramos por ti, y siempre más allá de los CVs.',
+    h1: ['Somos', '100%', 'candidate', 'Centric'],
+    meaning: '¿Qué significa eso?',
+    star: ['Que', 'tú', 'eres la', 'estrella'],
+    how: '¿Cómo lo hacemos?',
+    steps: [
+      ['1', 'Encuentra tu good job', routes.jobs.es, 'var(--teal)', '2020/12/candidatos-picto-2.png'],
+      ['2', 'Envíanos tu CV', routes.cv.es, 'var(--coral)', '2020/12/candidatos-picto-1.png'],
+    ],
+    join: 'Únete a Melza',
+    quotes: [
+      { quote: 'Durante todo el proceso de selección desde Melza, en mi caso a través de Miguel, me hicieron sentir que no estaba solo, proporcionándome información y sobretodo dando apoyo y comprensión con los millones de dudas que te surgen en ese difícil momento de dar el paso de cambiar de empleo.', name: 'Carlos Núñez', role: 'Senior Software Developer' },
+      { quote: 'I had the pleasure to meet Cristina, who helped me with the recruitment process for an Intl Fashion Company. I would recommend companies to engage her in projects because she will reflect the high level of professionalism while achieving the best deals to satisfy both parties.', name: 'Jelena Novokmet', role: 'Product Manager' },
+      { quote: 'Ha sido como formar parte de un equipo. Me sentí súper bien acompañado, comprendido y escuchado en todo el viaje del proceso. Además de que fue un éxito con ellos, he aprendido algunos matices más de cómo trabajar mis candidaturas.', name: 'Nahuel Velazco', role: 'Backend Engineer' },
+    ],
+  },
+  en: {
+    title: "Find a job | You're the star | Melza",
+    description: 'Melza is represented by fair and transparent recruiting processes. We look out for you, and always beyond the CVs.',
+    h1: ["We're", '100%', 'candidate', 'Centric'],
+    meaning: 'What does this mean?',
+    star: ['That', 'you', 'are', 'the star'],
+    how: 'How do we do it?',
+    steps: [
+      ['1', 'Find your good job', routes.jobs.en, 'var(--teal)', '2020/12/candidatos-picto-2.png'],
+      ['2', 'Send us your CV', routes.cv.en, 'var(--coral)', '2020/12/candidatos-picto-1.png'],
+    ],
+    join: 'Join Melza',
+    quotes: [
+      { quote: "Throughout the whole recruitment process with Melza, in my case with Miguel, they made me feel like I wasn't alone, providing the necessary information and especially giving me support and answers to the millions of questions I had during the difficult times of changing jobs.", name: 'Carlos Núñez', role: 'Senior Software Developer' },
+      { quote: 'I had the pleasure to meet Cristina, who helped me with the recruitment process for an Intl Fashion Company. I would recommend companies to engage her in projects because she will reflect the high level of professionalism while achieving the best deals to satisfy both parties.', name: 'Jelena Novokmet', role: 'Product Manager' },
+      { quote: "It's been like belonging to a team. I felt listened, understood and accompanied throughout the whole recruitment process. It was not only a complete success with them, I also learned better ways to address our vacancies.", name: 'Nahuel Velazco', role: 'Backend Engineer' },
+    ],
+  },
+}[lang];
+const other = lang === 'es' ? routes.candidates.en : routes.candidates.es;
+const slides = ['2020/12/candidatos-1.png', '2020/12/candidatos-2.png', '2020/12/candidatos-3.png', '2020/12/candidatos-4.png'];
+---
+<Base lang={lang} title={t.title} description={t.description} alt={other}>
+  <section class="intro grad">
+    <div class="wrap center">
+      <h1 class="display-xl reveal">
+        <Hl c="#fff">{t.h1[0]}</Hl> <Hl c="var(--lilac)">{t.h1[1]}</Hl><br />
+        <Hl c="#faf0af">{t.h1[2]}</Hl> <Hl c="#fff" h="var(--lilac)"><em>{t.h1[3]}</em></Hl>
+      </h1>
+      <p class="q">{t.meaning}</p>
+      <p class="display reveal">
+        <Hl c="#fff">{t.star[0]}</Hl> <Hl c="#efc495">{t.star[1]}</Hl> <Hl c="#fff">{t.star[2]}</Hl> <Hl c="var(--aqua-2)"><em>{t.star[3]}</em></Hl>
+      </p>
+      <img class="gif reveal" src={up('2020/12/candidatos-tu-eres-la-estrella.gif')} alt="" width="720" height="480" loading="lazy" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2 class="title center">{t.how}</h2>
+      <ul class="slides">
+        {slides.map((s) => <li class="reveal"><img src={up(s)} alt="" width="500" height="500" loading="lazy" /></li>)}
+      </ul>
+      <ul class="steps">
+        {t.steps.map(([n, label, href, color, img]) => (
+          <li class="reveal">
+            <a href={href}>
+              <img src={up(img)} alt="" width="120" height="120" loading="lazy" />
+              <span class="n" style={`color:${color}`}>{n}</span>
+              <span class="label"><Hl c={color}>{label}</Hl></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="center"><a class="btn btn-coral" href={routes.cv[lang]}>{t.join}</a></p>
+    </div>
+  </section>
+
+  <section class="section soft">
+    <div class="wrap"><Testimonials items={t.quotes} /></div>
+  </section>
+
+  <CtaBand lang={lang} />
+</Base>
+
+<style>
+  .intro { padding: clamp(72px, 12vw, 150px) 0; }
+  .q { font-size: 1.3rem; font-weight: 700; margin: 28px 0 40px; color: #fff; }
+  .gif { margin: 40px auto 0; border-radius: var(--radius); width: 100%; max-width: 720px; }
+  .slides { list-style: none; padding: 0; margin: 40px 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .steps { list-style: none; padding: 0; margin: 40px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .steps a { display: grid; justify-items: center; text-align: center; gap: 8px; text-decoration: none; }
+  .steps img { width: 100px; }
+  .n { font-size: 4rem; font-weight: 800; line-height: 1; }
+  .label { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; }
+  .soft { background: var(--soft); }
+  @media (max-width: 820px) {
+    .slides { grid-template-columns: 1fr 1fr; }
+    .steps { grid-template-columns: 1fr; }
+  }
+</style>

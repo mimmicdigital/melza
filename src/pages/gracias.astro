@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import Hl from '../components/Hl.astro';
+---
+<Base lang="es" title="¡Gracias! | Melza" noindex alt="/en/thank-you/">
+  <section class="intro grad">
+    <div class="wrap narrow center">
+      <h1 class="display"><Hl c="#fff">¡<em>Gracias</em>!</Hl></h1>
+      <p class="lead">Hemos recibido tu mensaje. Te responderemos lo antes posible.</p>
+      <a class="btn btn-purple" href="/">Volver al inicio</a>
+    </div>
+  </section>
+</Base>
+<style>
+  .intro { padding: clamp(72px, 12vw, 150px) 0; }
+  .lead { font-size: 1.2rem; font-weight: 600; }
+</style>

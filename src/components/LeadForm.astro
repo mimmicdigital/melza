@@ -1,0 +1,71 @@
+---
+import { esOnly, type Lang } from '../lib/site';
+
+// Contact and CV forms, handled by Netlify Forms (each submission is emailed to the inbox set in Netlify).
+interface Props { lang: Lang; kind: 'contact' | 'cv' }
+const { lang, kind } = Astro.props;
+const cv = kind === 'cv';
+const t = {
+  es: {
+    name: 'Nombre',
+    email: 'Correo electrónico',
+    message: 'Comentario o mensaje',
+    file: 'Adjunta tu CV (máx. 5 MB, pdf o zip)',
+    info: cv
+      ? 'MELZA CONSULTING SL como responsable del tratamiento tratará tus datos con la finalidad de gestionar tu participación en los procesos de selección de nuestra entidad o en su caso, el envío de tu curriculum a los posibles empleadores (clientes de nuestra organización) para su evaluación. Puedes acceder, rectificar y suprimir tus datos, así como ejercer otros derechos consultando la información adicional y detallada sobre protección de datos en nuestra'
+      : 'MELZA CONSULTING SL como responsable del tratamiento tratará tus datos con la finalidad de dar respuesta a tu consulta o petición. Puedes acceder, rectificar y suprimir tus datos, así como ejercer otros derechos consultando la información adicional y detallada sobre protección de datos en nuestra',
+    privacy: 'Política de Privacidad',
+    accept: cv
+      ? ['He leído y acepto las condiciones contenidas en la', 'sobre el tratamiento de mis datos y la información facilitada en mi currículum para procesos de selección de MELZA CONSULTING SL que encajen con mi perfil.']
+      : ['He leído y acepto las condiciones contenidas en la', 'sobre el tratamiento de mis datos para gestionar mi consulta o petición.'],
+    commercial: 'Acepto recibir información comercial sobre los productos, servicios y novedades de MELZA CONSULTING SL (opcional).',
+    send: 'Enviar',
+  },
+  en: {
+    name: 'Full name',
+    email: 'Email address',
+    message: 'Comment or message',
+    file: 'Attach your CV (max. 5 MB, pdf or zip)',
+    info: cv
+      ? 'MELZA CONSULTING SL, as data controller, will process your data for the purpose of managing your participation in the selection processes of our entity or, where appropriate, sending your CV to potential employers (clients of our organization) for evaluation. You can access, rectify and delete your data, as well as exercise other rights by consulting the additional and detailed information on data protection in our'
+      : 'MELZA CONSULTING SL, as data controller, will process your data in order to respond to your query or request. You can access, rectify and delete your data, as well as exercise other rights by consulting the additional and detailed information on data protection in our',
+    privacy: 'Privacy Policy',
+    accept: cv
+      ? ['I have read and accept the conditions contained in the', 'on the treatment of my data and the information provided in my curriculum for selection processes of MELZA CONSULTING SL that fit my profile.']
+      : ['I have read and accept the conditions contained in the', 'on the processing of my data to manage my query or request.'],
+    commercial: 'I agree to receive commercial information about the products, services and news of MELZA CONSULTING SL (optional).',
+    send: 'Send',
+  },
+}[lang];
+const name = `${kind}-${lang}`;
+const thanks = lang === 'es' ? '/gracias/' : '/en/thank-you/';
+---
+<form class="lead" name={name} method="POST" action={thanks} data-netlify="true" netlify-honeypot="bot-field"
+  enctype={cv ? 'multipart/form-data' : undefined} data-event={cv ? 'envio_cv' : 'contacto'}>
+  <input type="hidden" name="form-name" value={name} />
+  <p class="hidden-field"><label>No rellenar <input name="bot-field" /></label></p>
+  <label class="field">{t.name}<input name="nombre" required autocomplete="name" /></label>
+  <label class="field">{t.email}<input type="email" name="email" required autocomplete="email" /></label>
+  <label class="field">{t.message}<textarea name="mensaje" required></textarea></label>
+  {cv && <label class="field">{t.file}<input type="file" name="cv" required accept=".pdf,.zip,application/pdf,application/zip" data-max-mb="5" /></label>}
+  <p class="small">{t.info} <a href={esOnly.privacy}>{t.privacy}</a>.</p>
+  <label class="check"><input type="checkbox" name="acepta-privacidad" required /> <span>{t.accept[0]} <a href={esOnly.privacy}>{t.privacy}</a> {t.accept[1]}</span></label>
+  {!cv && <label class="check"><input type="checkbox" name="acepta-comercial" /> <span>{t.commercial}</span></label>}
+  <button class="btn btn-coral" type="submit">{t.send}</button>
+</form>
+<script>
+  // Netlify rejects big uploads with a generic error page, so check the CV size before sending.
+  for (const input of document.querySelectorAll<HTMLInputElement>('input[type=file][data-max-mb]')) {
+    input.addEventListener('change', () => {
+      const max = Number(input.dataset.maxMb) * 1024 * 1024;
+      const file = input.files?.[0];
+      const es = document.documentElement.lang === 'es';
+      input.setCustomValidity(file && file.size > max ? (es ? 'El archivo supera los 5 MB.' : 'The file is larger than 5 MB.') : '');
+      input.reportValidity();
+    });
+  }
+</script>
+<style>
+  .lead { background: #fff; border-radius: var(--radius); padding: clamp(22px, 4vw, 36px); box-shadow: 0 10px 30px rgba(56, 66, 68, 0.08); }
+  .lead .check a, .lead .small a { color: var(--purple); }
+</style>

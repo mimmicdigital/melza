@@ -1,0 +1,68 @@
+---
+import { esOnly, type Lang } from '../lib/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = {
+  es: {
+    label: 'Aviso de cookies',
+    text: 'Usamos cookies de Google Analytics para saber cómo se usa la web y mejorarla. Solo las activamos si nos das permiso.',
+    more: 'Más información',
+    accept: 'Aceptar',
+    reject: 'Rechazar',
+  },
+  en: {
+    label: 'Cookie notice',
+    text: 'We use Google Analytics cookies to understand how the site is used and improve it. We only turn them on if you allow it.',
+    more: 'Learn more',
+    accept: 'Accept',
+    reject: 'Reject',
+  },
+}[lang];
+---
+<div class="consent" id="consent" role="region" aria-label={c.label} hidden>
+  <p>{c.text} <a href={esOnly.cookies}>{c.more}</a></p>
+  <div class="actions">
+    <button class="btn btn-line" type="button" data-consent="denied">{c.reject}</button>
+    <button class="btn btn-coral" type="button" data-consent="granted">{c.accept}</button>
+  </div>
+</div>
+<script>
+  // Remembers the visitor's choice and passes it to Google Consent Mode (set up in Base.astro).
+  const box = document.getElementById('consent')!;
+  const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+  let choice: string | null = null;
+  try {
+    // "granted:<time>" or "denied:<time>"; after 24 months the visitor is asked again.
+    const [v, at] = (localStorage.getItem('melza-consent') ?? '').split(':');
+    if (Date.now() - Number(at) < 730 * 864e5) choice = v;
+  } catch { /* storage blocked: ask every visit */ }
+  if (!choice) box.hidden = false;
+
+  for (const btn of box.querySelectorAll<HTMLButtonElement>('[data-consent]')) {
+    btn.addEventListener('click', () => {
+      const value = btn.dataset.consent!;
+      try { localStorage.setItem('melza-consent', `${value}:${Date.now()}`); } catch { /* ignore */ }
+      gtag?.('consent', 'update', { analytics_storage: value });
+      box.hidden = true;
+    });
+  }
+  // "Configurar cookies" in the footer opens the notice again.
+  for (const link of document.querySelectorAll('[data-consent-open]')) {
+    link.addEventListener('click', (e) => { e.preventDefault(); box.hidden = false; });
+  }
+</script>
+<style>
+  .consent {
+    position: fixed; z-index: 90; left: 16px; right: 16px; bottom: 16px;
+    max-width: 440px; margin-left: auto;
+    background: var(--ink); color: #fff;
+    border-radius: var(--radius); padding: 20px 22px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  }
+  .consent[hidden] { display: none; }
+  .consent p { margin: 0 0 16px; font-size: 0.95rem; line-height: 1.45; }
+  .consent a { color: #fff; text-decoration: underline; }
+  .actions { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+  .actions .btn { min-height: 46px; padding: 0 22px; font-size: 0.95rem; color: #fff; }
+</style>

@@ -1,0 +1,45 @@
+---
+// Blog posts live at the site root, as they did in WordPress.
+import Base from '../layouts/Base.astro';
+import Hl from '../components/Hl.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { posts, excerpt, type Post } from '../lib/blog';
+import { site } from '../lib/site';
+
+export function getStaticPaths() {
+  return posts.map((p) => ({ params: { post: p.slug }, props: { p } }));
+}
+const { p } = Astro.props as { p: Post };
+const fmt = new Intl.DateTimeFormat('es-ES', { dateStyle: 'long' });
+const ld = [{
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: p.title,
+  datePublished: p.date,
+  inLanguage: 'es',
+  author: { '@type': 'Organization', name: 'Melza' },
+  publisher: { '@type': 'Organization', name: 'Melza' },
+  mainEntityOfPage: new URL(`/${p.slug}/`, site.url).href,
+  ...(p.image ? { image: new URL(p.image, site.url).href } : {}),
+}];
+---
+<Base lang="es" title={`${p.title} | Melza`} description={p.description || excerpt(p.html)} image={p.image ?? undefined} ld={ld}>
+  <article>
+    <header class="intro grad">
+      <div class="wrap narrow">
+        <p class="kicker"><a href="/blog/">Blog</a> · {p.categories.join(' · ')}</p>
+        <h1 class="title"><Hl c="#fff">{p.title}</Hl></h1>
+        <time datetime={p.date}>{fmt.format(new Date(p.date))}</time>
+      </div>
+    </header>
+    <div class="section">
+      <div class="wrap narrow prose" set:html={p.html} />
+    </div>
+  </article>
+  <CtaBand lang="es" />
+</Base>
+<style>
+  .intro { padding: clamp(56px, 8vw, 100px) 0; }
+  .kicker a { text-decoration: none; }
+  time { font-weight: 600; }
+</style>

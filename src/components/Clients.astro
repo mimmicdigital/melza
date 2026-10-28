@@ -1,0 +1,38 @@
+---
+import { up } from '../lib/site';
+
+const clients: [string, string][] = [
+  ['Classlife', '2020/11/1-logo-classlife.jpg'],
+  ['Clibank', '2023/03/logo-clibank.png'],
+  ['Lengdor', '2020/11/2-logo-lengdor.jpg'],
+  ['Venca', '2020/11/4-logo-venca.jpg'],
+  ['Socialpoint', '2020/11/6-logo-socialpoint.jpg'],
+  ['SCRM Lidl', '2020/11/7-logo-lidl.jpg'],
+  ['PdPaola', '2023/03/PDPAOLA_LOGO_BLANCO_transparente-2.png'],
+  ['Personio', '2023/03/personio-gmbh-vector-logo.png'],
+  ['GoTrendier', '2023/03/gotrendier.png'],
+  ['IKEA', '2023/03/ikea-logo-8.png'],
+  ['Monkey Taps', '2023/03/monkey-taps-logo.png'],
+  ['Kave Home', '2020/11/B-logo-kavehome.jpg'],
+  ['Plain Concepts', '2020/11/C-logo-plainconcepts.jpg'],
+  ['Smallpdf', '2020/11/D-logo-smallpdf.jpg'],
+  ['Rover', '2023/03/rover.com-logo.png'],
+  ['Schwarz Global Services', '2023/03/schwarz-global-services.png'],
+  ['SoloLearn', '2023/03/SoloLearn_logo.png'],
+  ['Kaufland', '2023/03/Kaufland_Logo.png'],
+  ['Collective Minds', '2023/03/cmrad.png'],
+  ['ISDIN', '2023/03/Logo_ISDIN_Love_your_Skin-01.png'],
+  ['Ninety Nine', '2023/03/ninety_nine.png'],
+];
+---
+<ul class="logos">
+  {clients.map(([name, file]) => (
+    <li><img src={up(file)} alt={name} loading="lazy" width="160" height="80" /></li>
+  ))}
+</ul>
+<style>
+  .logos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 18px; }
+  .logos li { display: grid; place-items: center; background: #fff; border-radius: 12px; padding: 14px; aspect-ratio: 2 / 1; }
+  .logos img { max-height: 56px; width: auto; object-fit: contain; filter: grayscale(1); opacity: 0.8; transition: filter 0.2s, opacity 0.2s; }
+  .logos li:hover img { filter: none; opacity: 1; }
+</style>

@@ -1,0 +1,53 @@
+---
+import Base from '../../layouts/Base.astro';
+import Hl from '../../components/Hl.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { getJobs, jobPath, type Job } from '../../lib/jobs';
+import { routes, site, up } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const jobs = await getJobs();
+  return jobs.map((job) => ({ params: { slug: job.slug }, props: { job } }));
+}
+
+const { job } = Astro.props as { job: Job };
+const plain = job.description.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+const description = `${job.title}${job.location ? ` en ${job.location}` : ''}. ${plain}`.slice(0, 155).trim();
+// Google needs a posting date for JobPosting; without one the page is still published, just without that markup.
+const ld = job.datePosted ? [{
+  '@context': 'https://schema.org',
+  '@type': 'JobPosting',
+  title: job.title,
+  description: job.description,
+  datePosted: job.datePosted,
+  employmentType: 'FULL_TIME',
+  directApply: false,
+  identifier: { '@type': 'PropertyValue', name: 'Melza', value: job.hash },
+  hiringOrganization: { '@type': 'Organization', name: 'Melza', sameAs: site.url, logo: new URL(up('2020/11/logo-melza.png'), site.url).href },
+  ...(job.remote ? { jobLocationType: 'TELECOMMUTE', applicantLocationRequirements: { '@type': 'Country', name: job.country || 'ES' } } : {}),
+  ...(job.city || job.country ? { jobLocation: { '@type': 'Place', address: { '@type': 'PostalAddress', addressLocality: job.city || undefined, addressCountry: job.country || 'ES' } } } : {}),
+  url: new URL(jobPath(job), site.url).href,
+}] : [];
+---
+<Base lang="es" title={`${job.title} | Empleo tech | Melza`} description={description} ld={ld}>
+  <section class="intro grad">
+    <div class="wrap narrow">
+      <p class="kicker"><a href={routes.jobs.es}>← Vacantes tech IT</a></p>
+      <h1 class="title"><Hl c="#fff">{job.title}</Hl></h1>
+      {job.location && <p class="where">{job.location}</p>}
+      <a class="btn btn-ink" href={job.applyUrl} target="_blank" rel="noopener">Aplicar a esta oferta</a>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap narrow">
+      <div class="prose" set:html={job.description} />
+      <p><a class="btn btn-coral" href={job.applyUrl} target="_blank" rel="noopener">Aplicar a esta oferta</a></p>
+    </div>
+  </section>
+  <CtaBand lang="es" />
+</Base>
+<style>
+  .intro { padding: clamp(56px, 8vw, 100px) 0; }
+  .kicker a { text-decoration: none; }
+  .where { font-weight: 700; font-size: 1.1rem; }
+</style>

@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import Hl from '../components/Hl.astro';
+
+interface Props { title: string; html: string; first: string; em: string }
+const { title, html, first, em } = Astro.props;
+---
+<Base lang="es" title={`${title} | Melza`} description={`${title} de melza.eu, la web de Melza Consulting S.L.`}>
+  <section class="intro grad">
+    <div class="wrap narrow"><h1 class="display"><Hl c="#fff">{first} <em>{em}</em></Hl></h1></div>
+  </section>
+  <section class="section">
+    <div class="wrap narrow prose" set:html={html} />
+  </section>
+</Base>
+<style>
+  .intro { padding: clamp(56px, 8vw, 100px) 0; }
+</style>

@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import Hl from '../components/Hl.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import faqs from '../data/faqs.json';
+import { routes, up, type Lang } from '../lib/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const items = faqs[lang];
+const t = {
+  es: {
+    title: '¿Qué es Melza? ¿Qué nos hace diferentes? | Conócenos mejor | FAQs',
+    description: 'Menos es más. Simplificamos. Trabajamos para hacer fácil lo difícil. Sumar y aportar. Desde el minuto 0 proponemos soluciones y alternativas.',
+    h1: ['Preguntas ', 'Frecuentes'],
+  },
+  en: {
+    title: 'What is Melza? What makes us different? | Get to know us | FAQs',
+    description: 'Less is more. We simplify. We work to make the hardest quite easy. Add up and contribute. From the starting point, we propose solutions and alternatives.',
+    h1: ['Frequent ', 'Questions'],
+  },
+}[lang];
+const other = lang === 'es' ? routes.faqs.en : routes.faqs.es;
+const ld = [{
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((i) => ({
+    '@type': 'Question',
+    name: i.q,
+    acceptedAnswer: { '@type': 'Answer', text: i.a.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() },
+  })),
+}];
+---
+<Base lang={lang} title={t.title} description={t.description} alt={other} ld={ld}>
+  <section class="intro grad">
+    <div class="wrap split">
+      <h1 class="display reveal"><Hl c="#fff">{t.h1[0]}<em>{t.h1[1]}</em></Hl></h1>
+      <img class="reveal" src={up('2020/11/home-metodo.gif')} alt="" width="520" height="400" />
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap narrow"><Faq items={items} /></div>
+  </section>
+  <CtaBand lang={lang} />
+</Base>
+
+<style>
+  .intro { padding: clamp(64px, 10vw, 120px) 0; }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 64px); align-items: center; }
+  .split img { border-radius: var(--radius); }
+  @media (max-width: 820px) { .split { grid-template-columns: 1fr; } }
+</style>

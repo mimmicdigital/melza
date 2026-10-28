@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import Hl from '../components/Hl.astro';
+import CtaBand from '../components/CtaBand.astro';
+---
+<Base lang="es" title="Página no encontrada | Melza" noindex>
+  <section class="intro grad">
+    <div class="wrap narrow center">
+      <h1 class="display"><Hl c="#fff">La página que estás buscando <em>no existe</em></Hl></h1>
+      <p lang="en">The page you're looking for doesn't exist.</p>
+      <p><a class="btn btn-purple" href="/">Ir a la página de inicio</a> <a class="btn btn-white" href="/en/" lang="en">Visit homepage</a></p>
+    </div>
+  </section>
+  <CtaBand lang="es" />
+</Base>
+<style>
+  .intro { padding: clamp(72px, 12vw, 150px) 0; }
+  .btn { margin: 6px; }
+</style>

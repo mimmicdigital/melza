@@ -1,0 +1,79 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Old WordPress URLs that no longer exist as pages. 301 keeps what Google already knows about them.
+[[redirects]]
+  from = "/en/homepage/"
+  to = "/en/"
+  status = 301
+[[redirects]]
+  from = "/empleos/"
+  to = "/vacantes-tech-it-empleos/"
+  status = 301
+[[redirects]]
+  from = "/pagina-404/"
+  to = "/"
+  status = 301
+[[redirects]]
+  from = "/en/page-404/"
+  to = "/en/"
+  status = 301
+[[redirects]]
+  from = "/login-customizer/"
+  to = "/"
+  status = 301
+[[redirects]]
+  from = "/privacy-policy/"
+  to = "/politica-de-privacidad/"
+  status = 301
+[[redirects]]
+  from = "/politica-de%20-privacy/"
+  to = "/politica-de-privacidad/"
+  status = 301
+[[redirects]]
+  from = "/category/*"
+  to = "/blog/"
+  status = 301
+[[redirects]]
+  from = "/tag/*"
+  to = "/blog/"
+  status = 301
+[[redirects]]
+  from = "/author/*"
+  to = "/blog/"
+  status = 301
+[[redirects]]
+  from = "/feed/*"
+  to = "/blog/"
+  status = 301
+[[redirects]]
+  from = "/en/empresas/"
+  to = "/en/#companies"
+  status = 301
+[[redirects]]
+  from = "/empresas/"
+  to = "/#empresas"
+  status = 301
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/wp-content/uploads/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"

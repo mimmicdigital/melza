@@ -16,9 +16,10 @@ const t = {
     meaning: '¿Qué significa eso?',
     star: ['Que', 'tú', 'eres la', 'estrella'],
     how: '¿Cómo lo hacemos?',
+    slides: ['Procesos justos y transparentes. Comunicación clara.', 'Ofrecemos una experiencia personalizada. Ya no eres un número.', 'Miramos más allá del CV: hard & soft skills.', 'Te involucramos en los procesos. Miramos por ti.'],
     steps: [
       ['1', 'Encuentra tu good job', routes.jobs.es, 'var(--teal)', '2020/12/candidatos-picto-2.png'],
-      ['2', 'Envíanos tu CV', routes.cv.es, 'var(--coral)', '2020/12/candidatos-picto-1.png'],
+      ['2', 'Envíanos tu CV', routes.cv.es, 'var(--coral-deep)', '2020/12/candidatos-picto-1.png'],
     ],
     join: 'Únete a Melza',
     quotes: [
@@ -34,9 +35,10 @@ const t = {
     meaning: 'What does this mean?',
     star: ['That', 'you', 'are', 'the star'],
     how: 'How do we do it?',
+    slides: ['Fair and transparent processes. Clear communication.', 'We offer a personalised experience. You are not just a number.', 'We look beyond the CV: hard & soft skills.', 'We involve you in the process. We look out for you.'],
     steps: [
       ['1', 'Find your good job', routes.jobs.en, 'var(--teal)', '2020/12/candidatos-picto-2.png'],
-      ['2', 'Send us your CV', routes.cv.en, 'var(--coral)', '2020/12/candidatos-picto-1.png'],
+      ['2', 'Send us your CV', routes.cv.en, 'var(--coral-deep)', '2020/12/candidatos-picto-1.png'],
     ],
     join: 'Join Melza',
     quotes: [
@@ -52,36 +54,41 @@ const slides = ['2020/12/candidatos-1.png', '2020/12/candidatos-2.png', '2020/12
 <Base lang={lang} title={t.title} description={t.description} alt={other}>
   <section class="intro grad">
     <div class="wrap center">
-      <h1 class="display-xl reveal">
-        <Hl c="#fff">{t.h1[0]}</Hl> <Hl c="var(--lilac)">{t.h1[1]}</Hl><br />
-        <Hl c="#faf0af">{t.h1[2]}</Hl> <Hl c="#fff" h="var(--lilac)"><em>{t.h1[3]}</em></Hl>
+      <h1 class="display-xl">
+        <Hl>{t.h1[0]}</Hl> <Hl h="var(--lilac-soft)">{t.h1[1]}</Hl><br />
+        <Hl>{t.h1[2]}</Hl> <Hl h="var(--lilac-soft)"><em>{t.h1[3]}</em></Hl>
       </h1>
       <p class="q">{t.meaning}</p>
-      <p class="display reveal">
-        <Hl c="#fff">{t.star[0]}</Hl> <Hl c="#efc495">{t.star[1]}</Hl> <Hl c="#fff">{t.star[2]}</Hl> <Hl c="var(--aqua-2)"><em>{t.star[3]}</em></Hl>
+      <p class="display star">
+        <Hl>{t.star[0]}</Hl> <Hl h="var(--orange)">{t.star[1]}</Hl> <Hl>{t.star[2]}</Hl> <Hl h="var(--aqua)"><em>{t.star[3]}</em></Hl>
       </p>
-      <img class="gif reveal" src={up('2020/12/candidatos-tu-eres-la-estrella.gif')} alt="" width="720" height="480" loading="lazy" />
+      <img class="gif" src={up('2020/12/candidatos-tu-eres-la-estrella.gif')} alt="" width="720" height="480" loading="lazy" />
+    </div>
+  </section>
+
+  <section class="section how on-dark">
+    <div class="wrap">
+      <h2 class="title center"><Hl h="var(--purple-deep)" c="#fff">{t.how}</Hl></h2>
+      <ul class="slides">
+        {slides.map((s, i) => <li><img src={up(s)} alt={t.slides[i]} width="500" height="500" loading="lazy" /></li>)}
+      </ul>
     </div>
   </section>
 
   <section class="section">
     <div class="wrap">
-      <h2 class="title center">{t.how}</h2>
-      <ul class="slides">
-        {slides.map((s) => <li class="reveal"><img src={up(s)} alt="" width="500" height="500" loading="lazy" /></li>)}
-      </ul>
       <ul class="steps">
         {t.steps.map(([n, label, href, color, img]) => (
-          <li class="reveal">
+          <li>
             <a href={href}>
               <img src={up(img)} alt="" width="120" height="120" loading="lazy" />
               <span class="n" style={`color:${color}`}>{n}</span>
-              <span class="label"><Hl c={color}>{label}</Hl></span>
+              <span class="label"><Hl>{label}</Hl></span>
             </a>
           </li>
         ))}
       </ul>
-      <p class="center"><a class="btn btn-coral" href={routes.cv[lang]}>{t.join}</a></p>
+      <p class="center"><a class="btn btn-ink" href={routes.cv[lang]}>{t.join}</a></p>
     </div>
   </section>
 
@@ -94,14 +101,18 @@ const slides = ['2020/12/candidatos-1.png', '2020/12/candidatos-2.png', '2020/12
 
 <style>
   .intro { padding: clamp(72px, 12vw, 150px) 0; }
-  .q { font-size: 1.3rem; font-weight: 700; margin: 28px 0 40px; color: #fff; }
+  .q { font-size: 1.3rem; font-weight: 700; margin: 28px 0 24px; color: var(--violet); }
+  .star { font-weight: 800; }
+  .how { background: var(--violet); }
+  .slides img { width: 100%; }
   .gif { margin: 40px auto 0; border-radius: var(--radius); width: 100%; max-width: 720px; }
-  .slides { list-style: none; padding: 0; margin: 40px 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-  .steps { list-style: none; padding: 0; margin: 40px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .slides { list-style: none; padding: 0; margin: 40px 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .steps { list-style: none; padding: 0; margin: 0 0 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
   .steps a { display: grid; justify-items: center; text-align: center; gap: 8px; text-decoration: none; }
   .steps img { width: 100px; }
   .n { font-size: 4rem; font-weight: 800; line-height: 1; }
   .label { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; }
+  .steps a:hover .label { text-decoration: underline; text-decoration-thickness: 3px; }
   .soft { background: var(--soft); }
   @media (max-width: 820px) {
     .slides { grid-template-columns: 1fr 1fr; }

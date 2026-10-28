@@ -24,7 +24,7 @@ const other = lang === 'es' ? routes.cv.en : routes.cv.es;
 <Base lang={lang} title={t.title} description={t.description} alt={other}>
   <section class="intro grad">
     <div class="wrap narrow">
-      <h1 class="display center"><Hl c="#fff">{t.h1[0]}<em>{t.h1[1]}</em></Hl></h1>
+      <h1 class="display center"><Hl>{t.h1[0]}<em>{t.h1[1]}</em></Hl></h1>
       <LeadForm lang={lang} kind="cv" />
     </div>
   </section>

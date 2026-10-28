@@ -20,6 +20,7 @@ const t = {
       : ['He leído y acepto las condiciones contenidas en la', 'sobre el tratamiento de mis datos para gestionar mi consulta o petición.'],
     commercial: 'Acepto recibir información comercial sobre los productos, servicios y novedades de MELZA CONSULTING SL (opcional).',
     send: 'Enviar',
+    sending: 'Enviando…',
   },
   en: {
     name: 'Full name',
@@ -35,15 +36,16 @@ const t = {
       : ['I have read and accept the conditions contained in the', 'on the processing of my data to manage my query or request.'],
     commercial: 'I agree to receive commercial information about the products, services and news of MELZA CONSULTING SL (optional).',
     send: 'Send',
+    sending: 'Sending…',
   },
 }[lang];
 const name = `${kind}-${lang}`;
 const thanks = lang === 'es' ? '/gracias/' : '/en/thank-you/';
 ---
-<form class="lead" name={name} method="POST" action={thanks} data-netlify="true" netlify-honeypot="bot-field"
+<form class="leadform" name={name} method="POST" action={thanks} data-netlify="true" netlify-honeypot="bot-field"
   enctype={cv ? 'multipart/form-data' : undefined} data-event={cv ? 'envio_cv' : 'contacto'}>
   <input type="hidden" name="form-name" value={name} />
-  <p class="hidden-field"><label>No rellenar <input name="bot-field" /></label></p>
+  <p class="hidden-field" aria-hidden="true"><label>No rellenar <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
   <label class="field">{t.name}<input name="nombre" required autocomplete="name" /></label>
   <label class="field">{t.email}<input type="email" name="email" required autocomplete="email" /></label>
   <label class="field">{t.message}<textarea name="mensaje" required></textarea></label>
@@ -51,9 +53,17 @@ const thanks = lang === 'es' ? '/gracias/' : '/en/thank-you/';
   <p class="small">{t.info} <a href={esOnly.privacy}>{t.privacy}</a>.</p>
   <label class="check"><input type="checkbox" name="acepta-privacidad" required /> <span>{t.accept[0]} <a href={esOnly.privacy}>{t.privacy}</a> {t.accept[1]}</span></label>
   {!cv && <label class="check"><input type="checkbox" name="acepta-comercial" /> <span>{t.commercial}</span></label>}
-  <button class="btn btn-coral" type="submit">{t.send}</button>
+  <button class="btn btn-ink" type="submit" data-sending={t.sending}>{t.send}</button>
 </form>
 <script>
+  // Lock the button while the form posts, so nobody sends it twice.
+  for (const form of document.querySelectorAll<HTMLFormElement>('form.leadform')) {
+    form.addEventListener('submit', () => {
+      const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+      btn.disabled = true;
+      btn.textContent = btn.dataset.sending!;
+    });
+  }
   // Netlify rejects big uploads with a generic error page, so check the CV size before sending.
   for (const input of document.querySelectorAll<HTMLInputElement>('input[type=file][data-max-mb]')) {
     input.addEventListener('change', () => {
@@ -66,6 +76,7 @@ const thanks = lang === 'es' ? '/gracias/' : '/en/thank-you/';
   }
 </script>
 <style>
-  .lead { background: #fff; border-radius: var(--radius); padding: clamp(22px, 4vw, 36px); box-shadow: 0 10px 30px rgba(56, 66, 68, 0.08); }
-  .lead .check a, .lead .small a { color: var(--purple); }
+  .leadform { background: #fff; border-radius: var(--radius); padding: clamp(22px, 4vw, 36px); box-shadow: 0 10px 30px rgba(56, 66, 68, 0.08); }
+  .leadform .check a, .leadform .small a { color: var(--purple-deep); }
+  .leadform .small { color: #59625f; }
 </style>

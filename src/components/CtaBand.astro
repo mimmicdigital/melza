@@ -6,7 +6,7 @@ const { lang } = Astro.props;
 const t = ui[lang].cta;
 ---
 <section class="cta">
-  <div class="wrap narrow center reveal">
+  <div class="wrap narrow center">
     <h2>{t.title}</h2>
     <p><strong>{t.lead}</strong> {t.text}</p>
     <a class="btn btn-purple" href={routes.contact[lang]}>{t.button}</a>

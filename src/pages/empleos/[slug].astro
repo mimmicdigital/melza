@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Hl from '../../components/Hl.astro';
+import Icon from '../../components/Icon.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { getJobs, jobPath, type Job } from '../../lib/jobs';
 import { routes, site, up } from '../../lib/site';
@@ -32,22 +33,24 @@ const ld = job.datePosted ? [{
 <Base lang="es" title={`${job.title} | Empleo tech | Melza`} description={description} ld={ld}>
   <section class="intro grad">
     <div class="wrap narrow">
-      <p class="kicker"><a href={routes.jobs.es}>← Vacantes tech IT</a></p>
-      <h1 class="title"><Hl c="#fff">{job.title}</Hl></h1>
+      <p class="back"><a href={routes.jobs.es}><Icon name="arrow-left" /> Vacantes tech IT</a></p>
+      <h1 class="title"><Hl>{job.title}</Hl></h1>
       {job.location && <p class="where">{job.location}</p>}
-      <a class="btn btn-ink" href={job.applyUrl} target="_blank" rel="noopener">Aplicar a esta oferta</a>
+      <a class="btn btn-ink" href={job.applyUrl} target="_blank" rel="noopener">Aplicar a esta oferta <Icon name="external" /><span class="sr"> (se abre en una pestaña nueva)</span></a>
     </div>
   </section>
   <section class="section">
     <div class="wrap narrow">
       <div class="prose" set:html={job.description} />
-      <p><a class="btn btn-coral" href={job.applyUrl} target="_blank" rel="noopener">Aplicar a esta oferta</a></p>
+      <p><a class="btn btn-ink" href={job.applyUrl} target="_blank" rel="noopener">Aplicar a esta oferta <Icon name="external" /><span class="sr"> (se abre en una pestaña nueva)</span></a></p>
     </div>
   </section>
   <CtaBand lang="es" />
 </Base>
 <style>
   .intro { padding: clamp(56px, 8vw, 100px) 0; }
-  .kicker a { text-decoration: none; }
+  .back { margin-bottom: 20px; }
+  .back a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 700; color: var(--violet); text-decoration: none; }
+  .back a:hover { text-decoration: underline; }
   .where { font-weight: 700; font-size: 1.1rem; }
 </style>

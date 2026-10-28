@@ -2,6 +2,7 @@
 // Blog posts live at the site root, as they did in WordPress.
 import Base from '../layouts/Base.astro';
 import Hl from '../components/Hl.astro';
+import Icon from '../components/Icon.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { posts, excerpt, type Post } from '../lib/blog';
 import { site } from '../lib/site';
@@ -27,9 +28,9 @@ const ld = [{
   <article>
     <header class="intro grad">
       <div class="wrap narrow">
-        <p class="kicker"><a href="/blog/">Blog</a> · {p.categories.join(' · ')}</p>
-        <h1 class="title"><Hl c="#fff">{p.title}</Hl></h1>
-        <time datetime={p.date}>{fmt.format(new Date(p.date))}</time>
+        <p class="back"><a href="/blog/"><Icon name="arrow-left" /> Blog</a></p>
+        <h1 class="title"><Hl>{p.title}</Hl></h1>
+        <p class="meta"><time datetime={p.date}>{fmt.format(new Date(p.date))}</time> · {p.categories.join(', ')}</p>
       </div>
     </header>
     <div class="section">
@@ -40,6 +41,8 @@ const ld = [{
 </Base>
 <style>
   .intro { padding: clamp(56px, 8vw, 100px) 0; }
-  .kicker a { text-decoration: none; }
-  time { font-weight: 600; }
+  .back { margin-bottom: 20px; }
+  .back a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 700; color: var(--violet); text-decoration: none; }
+  .back a:hover { text-decoration: underline; }
+  .meta { font-weight: 600; }
 </style>

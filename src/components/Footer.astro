@@ -10,12 +10,12 @@ const thanks = lang === 'es' ? '/gracias/' : '/en/thank-you/';
 <section class="news grad" aria-labelledby="news-title">
   <div class="wrap news-inner">
     <div>
-      <h2 id="news-title" class="title"><span class="hl" style="--c:#fff">{n.title}</span></h2>
+      <h2 id="news-title" class="title"><span class="hl" style="--h:#fff">{n.title}</span></h2>
       <p set:html={n.text} />
     </div>
     <form name={`newsletter-${lang}`} method="POST" action={thanks} data-netlify="true" netlify-honeypot="bot-field" data-event="alta_newsletter">
       <input type="hidden" name="form-name" value={`newsletter-${lang}`} />
-      <p class="hidden-field"><label>No rellenar <input name="bot-field" /></label></p>
+      <p class="hidden-field" aria-hidden="true"><label>No rellenar <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
       <div class="row">
         <label class="sr" for="news-email">{n.placeholder}</label>
         <input id="news-email" type="email" name="email" required placeholder={n.placeholder} autocomplete="email" />
@@ -26,13 +26,13 @@ const thanks = lang === 'es' ? '/gracias/' : '/en/thank-you/';
     </form>
   </div>
 </section>
-<footer class="foot">
+<footer class="foot on-dark">
   <div class="wrap cols">
     <div>
       <img src={up('2020/11/logo-melza-white.png')} alt="Melza" width="140" height="40" loading="lazy" />
     </div>
     <div>
-      <h3 class="kicker">{t.footer.others}</h3>
+      <h3>{t.footer.others}</h3>
       <ul>
         <li><a href={routes.jobs[lang]}>{t.footer.jobs}</a></li>
         <li><a href={routes.cv[lang]}>{t.footer.cv}</a></li>
@@ -42,7 +42,7 @@ const thanks = lang === 'es' ? '/gracias/' : '/en/thank-you/';
       </ul>
     </div>
     <div>
-      <h3 class="kicker">{t.footer.contact}</h3>
+      <h3>{t.footer.contact}</h3>
       <ul>
         <li><a href={site.phoneHref}>{site.phone}</a></li>
         <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
@@ -69,12 +69,13 @@ const thanks = lang === 'es' ? '/gracias/' : '/en/thank-you/';
   .foot { background: var(--ink); color: #fff; padding: 64px 0 28px; }
   .cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 32px; }
   .cols img { height: 40px; width: auto; }
-  .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-  .foot a { text-decoration: none; opacity: 0.85; }
-  .foot a:hover { opacity: 1; text-decoration: underline; }
-  .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.15); font-size: 0.85rem; opacity: 0.8; }
+  .foot h3 { font-size: 1rem; font-weight: 800; color: var(--yellow); margin-bottom: 8px; }
+  .foot ul { list-style: none; margin: 0; padding: 0; display: grid; }
+  .foot a { color: #fff; text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+  .foot a:hover { text-decoration: underline; }
+  .legal { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; margin-top: 40px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.2); font-size: 0.88rem; }
   .legal p { margin: 0; }
-  .legal ul { display: flex; flex-wrap: wrap; gap: 16px; }
+  .legal ul { display: flex; flex-wrap: wrap; gap: 0 20px; }
   @media (max-width: 760px) {
     .news-inner, .cols { grid-template-columns: 1fr; }
     .row { flex-direction: column; }

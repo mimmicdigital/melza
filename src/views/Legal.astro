@@ -7,7 +7,7 @@ const { title, html, first, em } = Astro.props;
 ---
 <Base lang="es" title={`${title} | Melza`} description={`${title} de melza.eu, la web de Melza Consulting S.L.`}>
   <section class="intro grad">
-    <div class="wrap narrow"><h1 class="display"><Hl c="#fff">{first} <em>{em}</em></Hl></h1></div>
+    <div class="wrap narrow"><h1 class="display"><Hl>{first} <em>{em}</em></Hl></h1></div>
   </section>
   <section class="section">
     <div class="wrap narrow prose" set:html={html} />

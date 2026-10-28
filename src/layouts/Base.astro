@@ -46,6 +46,7 @@ const org = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonical} />
@@ -86,11 +87,15 @@ const org = {
     <Footer lang={lang} />
     <CookieBanner lang={lang} />
     <script>
-      // Fade sections in as they scroll into view, like the original site's animations.
+      // Draw the marker under each highlighted heading as it scrolls into view.
       const io = new IntersectionObserver((entries) => {
         for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-      }, { rootMargin: '0px 0px -10% 0px' });
-      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+      }, { rootMargin: '0px 0px -12% 0px' });
+      document.querySelectorAll('h1, h2, .display').forEach((el) => {
+        if (!el.querySelector('.hl')) return;
+        el.classList.add('draw');
+        io.observe(el);
+      });
       // Lead forms report a GA4 event (only sent if the visitor accepted analytics cookies).
       const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
       document.querySelectorAll<HTMLFormElement>('form[data-event]').forEach((form) => {

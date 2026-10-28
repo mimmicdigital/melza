@@ -8,7 +8,7 @@ const fmt = new Intl.DateTimeFormat('es-ES', { dateStyle: 'long' });
 ---
 <Base lang="es" title="Blog | Melza Tech Headhunting" description="Artículos sobre recruiting tech, inteligencia artificial en selección y cómo destacar en LinkedIn.">
   <section class="intro grad">
-    <div class="wrap"><h1 class="display"><Hl c="#fff">Blog</Hl></h1></div>
+    <div class="wrap"><h1 class="display"><Hl>Blog</Hl></h1></div>
   </section>
   <section class="section">
     <div class="wrap">
@@ -16,10 +16,9 @@ const fmt = new Intl.DateTimeFormat('es-ES', { dateStyle: 'long' });
         {posts.map((p) => (
           <li>
             <a href={`/${p.slug}/`}>
-              <p class="kicker">{p.categories.join(' · ')}</p>
               <h2>{p.title}</h2>
               <p>{p.description || excerpt(p.html)}</p>
-              <time datetime={p.date}>{fmt.format(new Date(p.date))}</time>
+              <p class="meta"><time datetime={p.date}>{fmt.format(new Date(p.date))}</time> · {p.categories.join(', ')}</p>
             </a>
           </li>
         ))}
@@ -33,6 +32,6 @@ const fmt = new Intl.DateTimeFormat('es-ES', { dateStyle: 'long' });
   .posts { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
   .posts a { display: block; height: 100%; padding: 28px; border-radius: var(--radius); background: var(--soft); text-decoration: none; }
   .posts h2 { font-size: 1.3rem; }
-  .kicker { color: var(--coral); }
-  time { font-size: 0.85rem; opacity: 0.7; }
+  .posts a:hover h2 { text-decoration: underline; }
+  .meta { font-size: 0.88rem; color: #59625f; margin: 0; }
 </style>

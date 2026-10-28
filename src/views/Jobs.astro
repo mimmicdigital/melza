@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Hl from '../components/Hl.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { getJobs, jobPath } from '../lib/jobs';
+import Icon from '../components/Icon.astro';
 import { routes, site, type Lang } from '../lib/site';
 
 interface Props { lang: Lang }
@@ -20,6 +21,9 @@ const t = {
     none: '¿No encuentras tu oferta? Envíanos tu CV y te tendremos en cuenta.',
     cv: 'Envíanos tu CV',
     remote: 'Remoto',
+    newTab: '(se abre en una pestaña nueva)',
+    emptyTitle: 'Las ofertas se están actualizando',
+    emptyText: 'Mientras tanto puedes verlas todas en nuestra página de empleo o enviarnos tu CV directamente.',
   },
   en: {
     title: 'Tech IT Vacancies | Find your Good Job with Melza',
@@ -32,6 +36,9 @@ const t = {
     none: "Can't find your offer? Send us your CV and we'll keep you in mind.",
     cv: 'Send us your CV',
     remote: 'Remote',
+    newTab: '(opens in a new tab)',
+    emptyTitle: 'Our offers are being updated',
+    emptyText: 'In the meantime you can see them all on our careers page or send us your CV directly.',
   },
 }[lang];
 const other = lang === 'es' ? routes.jobs.en : routes.jobs.es;
@@ -39,7 +46,7 @@ const other = lang === 'es' ? routes.jobs.en : routes.jobs.es;
 <Base lang={lang} title={t.title} description={t.description} alt={other}>
   <section class="intro grad">
     <div class="wrap">
-      <h1 class="display reveal"><Hl c="#fff">{t.h1[0]}<em>{t.h1[1]}</em></Hl></h1>
+      <h1 class="display"><Hl>{t.h1[0]}<em>{t.h1[1]}</em></Hl></h1>
       <p class="lead">{jobs.length ? t.lead : t.leadEmpty}</p>
     </div>
   </section>
@@ -52,15 +59,22 @@ const other = lang === 'es' ? routes.jobs.en : routes.jobs.es;
               <a href={jobPath(job)}>
                 <h2>{job.title}</h2>
                 <p>{[job.location, job.remote && t.remote].filter(Boolean).join(' · ') || 'Barcelona'}</p>
-                <span class="more">{t.see} →</span>
+                <span class="more">{t.see} <Icon name="arrow-right" /></span>
               </a>
             </li>
           ))}
         </ul>
       ) : (
-        <p class="center"><a class="btn btn-coral" href={site.careersPage} target="_blank" rel="noopener">{t.all}</a></p>
+        <div class="empty center">
+          <h2>{t.emptyTitle}</h2>
+          <p>{t.emptyText}</p>
+          <div class="actions">
+            <a class="btn btn-ink" href={routes.cv[lang]}>{t.cv}</a>
+            <a class="btn btn-line" href={site.careersPage} target="_blank" rel="noopener">{t.all} <Icon name="external" /><span class="sr"> {t.newTab}</span></a>
+          </div>
+        </div>
       )}
-      <p class="center after">{t.none} <a href={routes.cv[lang]}>{t.cv}</a></p>
+      {jobs.length > 0 && <p class="center after">{t.none} <a href={routes.cv[lang]}>{t.cv}</a></p>}
     </div>
   </section>
   <CtaBand lang={lang} />
@@ -71,10 +85,13 @@ const other = lang === 'es' ? routes.jobs.en : routes.jobs.es;
   .lead { font-size: 1.2rem; font-weight: 600; max-width: 640px; }
   .jobs { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
   .jobs a { display: flex; flex-direction: column; height: 100%; padding: 24px; border-radius: var(--radius); border: 1px solid var(--line); text-decoration: none; transition: border-color 0.2s, transform 0.2s; }
-  .jobs a:hover { border-color: var(--coral); transform: translateY(-2px); }
+  .jobs a:hover { border-color: var(--violet); transform: translateY(-2px); }
   .jobs h2 { font-size: 1.2rem; }
-  .jobs p { margin: 0 0 16px; opacity: 0.75; font-size: 0.95rem; }
-  .more { margin-top: auto; font-weight: 700; color: var(--coral); }
+  .jobs p { margin: 0 0 16px; color: #59625f; font-size: 0.95rem; }
+  .more { margin-top: auto; font-weight: 700; color: var(--violet); display: inline-flex; align-items: center; gap: 8px; }
+  .empty { max-width: 560px; margin: 0 auto; }
+  .empty h2 { font-size: 1.6rem; }
+  .empty .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 24px; }
   .after { margin-top: 48px; }
-  .after a { color: var(--purple); font-weight: 700; }
+  .after a { color: var(--purple-deep); font-weight: 700; }
 </style>

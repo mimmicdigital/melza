@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Hl from '../components/Hl.astro';
 import LeadForm from '../components/LeadForm.astro';
+import Icon from '../components/Icon.astro';
 import { routes, site, up, type Lang } from '../lib/site';
 
 interface Props { lang: Lang }
@@ -33,11 +34,11 @@ const other = lang === 'es' ? routes.contact.en : routes.contact.es;
 <Base lang={lang} title={t.title} description={t.description} alt={other}>
   <section class="intro grad">
     <div class="wrap split">
-      <div class="reveal">
-        <h1 class="display-xl"><Hl c="#fff">Let's</Hl> <Hl c="var(--red)"><em>Talk</em></Hl></h1>
+      <div>
+        <h1 class="display-xl"><Hl>Let's</Hl> <Hl h="var(--lilac-soft)"><em>Talk</em></Hl></h1>
         <p class="lead">{t.lead[0]}<br />{t.lead[1]}</p>
       </div>
-      <img class="reveal" src={up('2020/12/contacto-top-img.png')} alt="" width="560" height="460" />
+      <img src={up('2020/12/contacto-top-img.png')} alt="" width="560" height="460" />
     </div>
   </section>
 
@@ -47,12 +48,12 @@ const other = lang === 'es' ? routes.contact.en : routes.contact.es;
         <li>
           <img src={up('2020/12/contacto-picto-email.png')} alt="" width="64" height="64" loading="lazy" />
           <h2>{t.email}</h2>
-          <a class="btn btn-coral" href={`mailto:${site.email}`}>{site.email}</a>
+          <a class="way" href={`mailto:${site.email}`}><Icon name="mail" /> {site.email}</a>
         </li>
         <li>
           <img src={up('2020/12/contacto-picto-telefono.png')} alt="" width="64" height="64" loading="lazy" />
           <h2>{t.phone}</h2>
-          <a class="btn btn-coral" href={site.phoneHref}>{site.phone}</a>
+          <a class="way" href={site.phoneHref}><Icon name="phone" /> {site.phone}</a>
         </li>
         <li>
           <img src={up('2020/12/contacto-picto-oficina.png')} alt="" width="64" height="64" loading="lazy" />
@@ -76,6 +77,8 @@ const other = lang === 'es' ? routes.contact.en : routes.contact.es;
   .ways { list-style: none; padding: 0; margin: 0; display: grid; gap: 36px; }
   .ways img { width: 56px; margin-bottom: 10px; }
   .ways h2 { font-size: 1.3rem; }
-  address { font-style: normal; font-weight: 600; }
+  .way { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: clamp(1.15rem, 2vw, 1.4rem); font-weight: 800; color: var(--violet); text-decoration-thickness: 2px; text-underline-offset: 5px; }
+  .way:hover { text-decoration-color: var(--coral); }
+  address { font-style: normal; font-weight: 600; font-size: 1.1rem; }
   @media (max-width: 820px) { .split, .grid { grid-template-columns: 1fr; } }
 </style>

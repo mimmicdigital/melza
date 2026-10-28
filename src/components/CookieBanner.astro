@@ -20,7 +20,7 @@ const c = {
   },
 }[lang];
 ---
-<div class="consent" id="consent" role="region" aria-label={c.label} hidden>
+<div class="consent on-dark" id="consent" role="region" aria-label={c.label} hidden>
   <p>{c.text} <a href={esOnly.cookies}>{c.more}</a></p>
   <div class="actions">
     <button class="btn btn-line" type="button" data-consent="denied">{c.reject}</button>
@@ -64,5 +64,12 @@ const c = {
   .consent p { margin: 0 0 16px; font-size: 0.95rem; line-height: 1.45; }
   .consent a { color: #fff; text-decoration: underline; }
   .actions { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
-  .actions .btn { min-height: 46px; padding: 0 22px; font-size: 0.95rem; color: #fff; }
+  .actions .btn { min-height: 46px; padding: 0 22px; font-size: 0.95rem; }
+  .actions .btn-line { color: #fff; }
+  @media (max-width: 560px) {
+    .consent { left: 8px; right: 8px; bottom: 8px; padding: 14px 16px; }
+    .consent p { font-size: 0.85rem; margin-bottom: 12px; }
+    .actions { flex-wrap: nowrap; }
+    .actions .btn { flex: 1; min-height: 44px; padding: 0 12px; }
+  }
 </style>

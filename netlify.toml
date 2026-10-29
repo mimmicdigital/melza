@@ -77,3 +77,17 @@
   for = "/wp-content/uploads/*"
   [headers.values]
     Cache-Control = "public, max-age=2592000"
+
+# Old WordPress/Yoast sitemaps that Search Console still remembers point to the new one.
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/sitemap-index.xml"
+  status = 301
+[[redirects]]
+  from = "/sitemap_index.xml"
+  to = "/sitemap-index.xml"
+  status = 301
+[[redirects]]
+  from = "/*-sitemap.xml"
+  to = "/sitemap-index.xml"
+  status = 301

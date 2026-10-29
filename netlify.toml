@@ -88,6 +88,34 @@
   to = "/sitemap-index.xml"
   status = 301
 [[redirects]]
-  from = "/*-sitemap.xml"
+  from = "/page-sitemap.xml"
+  to = "/sitemap-index.xml"
+  status = 301
+[[redirects]]
+  from = "/post-sitemap.xml"
+  to = "/sitemap-index.xml"
+  status = 301
+[[redirects]]
+  from = "/portfolio-sitemap.xml"
+  to = "/sitemap-index.xml"
+  status = 301
+[[redirects]]
+  from = "/attachment-sitemap.xml"
+  to = "/sitemap-index.xml"
+  status = 301
+[[redirects]]
+  from = "/team_member-sitemap.xml"
+  to = "/sitemap-index.xml"
+  status = 301
+[[redirects]]
+  from = "/category-sitemap.xml"
+  to = "/sitemap-index.xml"
+  status = 301
+[[redirects]]
+  from = "/post_tag-sitemap.xml"
+  to = "/sitemap-index.xml"
+  status = 301
+[[redirects]]
+  from = "/author-sitemap.xml"
   to = "/sitemap-index.xml"
   status = 301

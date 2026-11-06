@@ -119,3 +119,7 @@
   from = "/author-sitemap.xml"
   to = "/sitemap-index.xml"
   status = 301
+[[headers]]
+  for = "/video/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"

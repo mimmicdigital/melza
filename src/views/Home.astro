@@ -14,7 +14,6 @@ const t = {
   es: {
     title: 'Melza Tech Headhunting | WOW People for TOP Employers | Agile',
     description: 'En Melza ayudamos a candidatos y empresas a encontrarse. Hacemos fácil lo difícil anticipándonos y ofreciendo agilidad en el proceso.',
-    newTab: '(se abre en una pestaña nueva)',
     servicesLink: 'Conoce el equipo',
     services: [
       ['Tech Headhunting', 'Búsqueda directa de perfiles de negocio y developers'],
@@ -35,6 +34,7 @@ const t = {
     easyText: 'Proponemos, nos anticipamos, ofrecemos agilidad en el proceso y calidad del talento presentado.',
     prove: '¿Te lo demostramos?',
     video: 'Ver el vídeo de presentación',
+    close: 'Cerrar vídeo',
     numbers: ['Somos de ', 'números', ' ...'],
     letters: ['... y de ', 'letras'],
     stats: [
@@ -53,7 +53,6 @@ const t = {
   en: {
     title: 'Melza Tech Headhunting | WOW People for TOP Employers | Agile',
     description: 'At Melza we help candidates and companies find each other. We make the hardest quite easy by anticipating and offering agility in the process.',
-    newTab: '(opens in a new tab)',
     servicesLink: 'Meet the team',
     services: [
       ['Tech Headhunting', 'Direct search of business profiles and developers'],
@@ -74,6 +73,7 @@ const t = {
     easyText: 'We propose, anticipate ourselves, offer agility in the process and quality in the provided talent.',
     prove: 'Want us to prove it?',
     video: 'Watch our presentation video',
+    close: 'Close video',
     numbers: ['We believe in ', 'numbers', ' ...'],
     letters: ['... and in ', 'letters'],
     stats: [
@@ -148,7 +148,7 @@ const fmt = new Intl.NumberFormat(lang === 'es' ? 'es-ES' : 'en-GB');
         </ul>
         <div class="actions">
           <a class="btn btn-ink" href={routes.contact[lang]}>{t.prove}</a>
-          <a class="btn btn-line" href={site.vimeo} target="_blank" rel="noopener"><Icon name="play" /> {t.video}<span class="sr"> {t.newTab}</span></a>
+          <a class="btn btn-line" href={site.vimeo} target="_blank" rel="noopener" data-video={site.vimeoId}><Icon name="play" /> {t.video}</a>
         </div>
       </div>
       <img class="gif" src={up('2020/11/home-shortlist-talent.gif')} alt="" width="560" height="420" loading="lazy" />
@@ -180,9 +180,30 @@ const fmt = new Intl.NumberFormat(lang === 'es' ? 'es-ES' : 'en-GB');
   </section>
 
   <CtaBand lang={lang} />
+
+  <dialog class="video" aria-label={t.video}>
+    <button class="close" type="button" aria-label={t.close}><Icon name="close" /></button>
+    <div class="frame"></div>
+  </dialog>
 </Base>
 
 <script>
+  // The presentation video plays in a pop-up (Vimeo player, without tracking cookies).
+  // Without JavaScript the button still opens the video on Vimeo.
+  const dialog = document.querySelector<HTMLDialogElement>('dialog.video')!;
+  const frame = dialog.querySelector('.frame')!;
+  document.querySelectorAll<HTMLAnchorElement>('[data-video]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      frame.innerHTML = `<iframe src="https://player.vimeo.com/video/${link.dataset.video}?autoplay=1&dnt=1" title="${link.textContent!.trim()}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+      dialog.showModal();
+    });
+  });
+  const close = () => dialog.close();
+  dialog.querySelector('.close')!.addEventListener('click', close);
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) close(); });
+  dialog.addEventListener('close', () => { frame.innerHTML = ''; });
+
   // Count the figures up once they come into view.
   const fmt = new Intl.NumberFormat(document.documentElement.lang === 'es' ? 'es-ES' : 'en-GB');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -231,6 +252,14 @@ const fmt = new Intl.NumberFormat(lang === 'es' ? 'es-ES' : 'en-GB');
   .stats strong { display: block; font-size: clamp(2.2rem, 4vw, 3.2rem); color: var(--violet); line-height: 1.1; font-variant-numeric: tabular-nums; }
   .stats span { font-weight: 600; }
   .letters { margin-bottom: 40px; }
+  .video { width: min(960px, calc(100vw - 32px)); max-width: none; padding: 0; border: 0; border-radius: var(--radius); background: #000; overflow: visible; }
+  .video::backdrop { background: rgba(28, 6, 52, 0.82); }
+  .video .frame { aspect-ratio: 16 / 9; }
+  .video .frame :global(iframe) { width: 100%; height: 100%; border: 0; border-radius: var(--radius); display: block; }
+  .video .close { position: absolute; top: -56px; right: 0; width: 44px; height: 44px; display: grid; place-items: center; border: 0; border-radius: 50%; background: #fff; color: var(--violet); cursor: pointer; }
+  .video[open] { animation: pop 0.3s var(--ease-out); }
+  @keyframes pop { from { opacity: 0; transform: scale(0.96); } }
+  @media (prefers-reduced-motion: reduce) { .video[open] { animation: none; } }
   .services { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 10px; }
   .services li { padding-left: 18px; border-left: 3px solid var(--coral); }
   .services strong { display: block; color: var(--violet); }

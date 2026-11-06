@@ -10,6 +10,7 @@ export const site = {
   address: { street: 'Avenida Diagonal 601, 8ª planta', city: 'Barcelona', zip: '08028', country: 'ES' },
   linkedin: 'https://www.linkedin.com/company/melza/',
   vimeo: 'https://vimeo.com/480812209',
+  vimeoId: '480812209',
   careersPage: 'https://www.careers-page.com/melza',
 };
 

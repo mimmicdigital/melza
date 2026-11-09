@@ -7,6 +7,10 @@
 
 # Old WordPress URLs that no longer exist as pages. 301 keeps what Google already knows about them.
 [[redirects]]
+  from = "/sobre-melza-consulting/"
+  to = "/headhunter-barcelona/"
+  status = 301
+[[redirects]]
   from = "/en/homepage/"
   to = "/en/"
   status = 301
